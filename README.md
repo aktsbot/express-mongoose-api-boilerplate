@@ -19,4 +19,12 @@ $ npm i
 $ npm run dev
 ```
 
+## TODO:
+
+- folder structure
+- validation
+- json api
+- user reg/login
+- postman collection
+
 **Happy Hacking!**

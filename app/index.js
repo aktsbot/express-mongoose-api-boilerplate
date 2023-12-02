@@ -5,16 +5,23 @@ import { connectDB, closeDB } from "./db.js";
 import config from "./config.js";
 import logger from "./logger.js";
 import httpLogger from "./middlewares/http-logger.middleware.js";
+import {
+  notFound,
+  errorHandler,
+} from "./middlewares/error-handlers.middleware.js";
+import appRouter from "./routes/index.js";
 
 const app = express();
 
+app.use(express.json());
 app.use(httpLogger());
 
-app.get("/", (req, res) => {
-  return res.json({
-    message: "Aha!",
-  });
-});
+// all routes for the app
+app.use(appRouter);
+
+// if no route matches, let the error handler deal with the request
+app.use(notFound);
+app.use(errorHandler);
 
 const server = app.listen(config.port, (err) => {
   if (err) {
