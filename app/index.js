@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(httpLogger());
 
 // all routes for the app
-app.use(appRouter);
+app.use("/api", appRouter);
 
 // if no route matches, let the error handler deal with the request
 app.use(notFound);
