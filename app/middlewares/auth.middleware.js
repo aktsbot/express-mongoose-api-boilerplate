@@ -12,7 +12,7 @@ export const deserializeUser = (req, res, next) => {
     return next();
   }
 
-  const decoded = verifyJWT({
+  const { isExpired, decoded } = verifyJWT({
     token: accessToken,
     tokenType: "accessTokenPublicKey",
   });
@@ -21,11 +21,21 @@ export const deserializeUser = (req, res, next) => {
     res.locals.session = decoded;
   }
 
+  res.locals.accessTokenExpired = isExpired;
+
   return next();
 };
 
 export const requireUser = async (req, res, next) => {
   logger.debug(res.locals);
+
+  if (res.locals.accessTokenExpired) {
+    return next({
+      status: 403,
+      message: "Login required for accessing resource",
+      messageCode: "JWT_EXPIRED",
+    });
+  }
 
   const session = res.locals.session;
 

@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import config from "./config.js";
+import logger from "./logger.js";
 
 export const makeJWT = ({ payload, tokenType, extraOptions }) => {
   let privateKeyName = "accessTokenPrivateKey";
@@ -28,9 +29,13 @@ export const verifyJWT = ({ token, tokenType }) => {
 
   try {
     const decoded = jwt.verify(token, publicKey);
-    return decoded;
+    return { isExpired: false, decoded };
   } catch (e) {
-    return null;
+    logger.debug(e);
+    return {
+      isExpired: e.message == "jwt expired",
+      decoded: null,
+    };
   }
 };
 
