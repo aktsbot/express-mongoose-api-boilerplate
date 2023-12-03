@@ -6,6 +6,7 @@ import { connectDB, closeDB } from "./db.js";
 import config from "./config.js";
 import logger from "./logger.js";
 import httpLogger from "./middlewares/http-logger.middleware.js";
+import { deserializeUser } from "./middlewares/auth.middleware.js";
 import {
   notFound,
   errorHandler,
@@ -20,6 +21,7 @@ app.use(
   }),
 );
 app.use(express.json());
+app.use(deserializeUser);
 app.use(httpLogger());
 
 // all routes for the app

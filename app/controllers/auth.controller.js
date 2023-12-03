@@ -85,3 +85,14 @@ export const loginUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getUserInfo = (req, res, next) => {
+  try {
+    const user = { ...res.locals.user };
+    delete user._id;
+
+    return res.json({ ...user });
+  } catch (error) {
+    next(error);
+  }
+};
