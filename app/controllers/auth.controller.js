@@ -1,6 +1,6 @@
 import logger from "../logger.js";
 
-import { makeToken } from "../jwt.js";
+import { makeToken, verifyJWT } from "../jwt.js";
 
 import User from "../models/user.model.js";
 import Session from "../models/session.model.js";
@@ -92,6 +92,76 @@ export const getUserInfo = (req, res, next) => {
     delete user._id;
 
     return res.json({ ...user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const makeNewTokens = async (req, res, next) => {
+  // if a refresh token is sent, we return back a new access token and refresh token
+  // and invalidate the old session
+  try {
+    const { body } = req.xop;
+    const refreshToken = body.refreshToken;
+
+    if (!refreshToken) {
+      return next({
+        status: 403,
+        message: "Refresh token is not found.",
+      });
+    }
+
+    // refresh token must not have been expired too!
+    const { isExpired, decoded } = verifyJWT({
+      token: refreshToken,
+      tokenType: "refreshTokenPublicKey",
+    });
+
+    if (isExpired) {
+      return next({
+        status: 403,
+        messageCode: "REFRESH_TOKEN_JWT_EXPIRED",
+      });
+    }
+
+    const sessionInfo = await Session.findOne({
+      uuid: decoded.session,
+      isValid: true,
+    }).populate("user", "email fullName uuid _id");
+
+    if (!sessionInfo) {
+      return next({
+        status: 403,
+        message: "Session has expired or is no longer valid",
+      });
+    }
+
+    sessionInfo.isValid = false;
+    await sessionInfo.save();
+
+    const session = await new Session({
+      user: sessionInfo.user._id,
+      isValid: true,
+    }).save();
+
+    // token - {session: 'uuid'}
+    const tokenPayload = {
+      session: session.uuid,
+    };
+
+    const newAccessToken = makeToken({
+      payload: tokenPayload,
+      type: "accessToken",
+    });
+    const newRefreshToken = makeToken({
+      payload: tokenPayload,
+      type: "refreshToken",
+    });
+
+    return res.send({
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    });
   } catch (error) {
     next(error);
   }

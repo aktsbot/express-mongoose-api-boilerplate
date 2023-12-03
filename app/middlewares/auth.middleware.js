@@ -33,7 +33,7 @@ export const requireUser = async (req, res, next) => {
     return next({
       status: 403,
       message: "Login required for accessing resource",
-      messageCode: "JWT_EXPIRED",
+      messageCode: "ACCESS_TOKEN_JWT_EXPIRED",
     });
   }
 
