@@ -26,5 +26,6 @@ $ npm run dev
 - json api
 - user reg/login
 - postman collection
+- cors
 
 **Happy Hacking!**

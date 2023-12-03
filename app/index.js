@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 
 import { connectDB, closeDB } from "./db.js";
 import config from "./config.js";
@@ -13,6 +14,11 @@ import appRouter from "./routes/index.js";
 
 const app = express();
 
+app.use(
+  cors({
+    origin: config.corsOrigins,
+  }),
+);
 app.use(express.json());
 app.use(httpLogger());
 
