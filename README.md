@@ -21,11 +21,7 @@ $ npm run dev
 
 ## TODO:
 
-- folder structure
-- validation
-- json api
-- user reg/login
 - postman collection
-- cors
+- user update - email/fullname/password
 
 **Happy Hacking!**
