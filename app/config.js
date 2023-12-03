@@ -13,6 +13,12 @@ const config = {
   env: process.env.NODE_ENV || "development",
   mongodb_uri: process.env.MONGODB_URI,
   corsOrigins: makeCorsOrigins(),
+
+  // jwt
+  accessTokenPrivateKey: process.env.ACCESS_TOKEN_PRIVATE_KEY,
+  accessTokenPublicKey: process.env.ACCESS_TOKEN_PUBLIC_KEY,
+  refreshTokenPrivateKey: process.env.REFRESH_TOKEN_PRIVATE_KEY,
+  refreshTokenPublicKey: process.env.REFRESH_TOKEN_PUBLIC_KEY,
 };
 
 export default config;

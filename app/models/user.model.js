@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
       default: () => uuidv4(),
+      index: true,
     },
     fullName: {
       type: String,
@@ -18,12 +19,12 @@ const UserSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+      index: true,
     },
     password: {
       type: String,
       required: true,
     },
-
     status: {
       type: String,
       default: "active", // active, inactive
