@@ -170,7 +170,7 @@ export const makeNewTokens = async (req, res, next) => {
 export const updatePassword = async (req, res, next) => {
   try {
     const user = { ...res.locals.user };
-    const body = { ...req.xop.body };
+    const { body } = req.xop;
 
     const userInfo = await User.findById(user._id);
 
