@@ -31,3 +31,13 @@ export const makeNewTokensSchema = joi
     }),
   })
   .unknown(true);
+
+export const updatePasswordSchema = joi
+  .object()
+  .keys({
+    body: joi.object().keys({
+      oldPassword: joi.string().required(),
+      newPassword: joi.string().required(),
+    }),
+  })
+  .unknown(true);
