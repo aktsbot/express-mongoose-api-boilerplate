@@ -197,3 +197,33 @@ export const updatePassword = async (req, res, next) => {
     next(error);
   }
 };
+
+export const forgotPassword = async (req, res, next) => {
+  try {
+    const message =
+      "If the email address exists in our system, it should be getting an email shortly.";
+    const { body } = req.xop;
+    const userPresent = await User.findOne({ email: body.email });
+
+    if (!userPresent) {
+      return next({
+        status: 200,
+        message,
+      });
+    }
+
+    userPresent.generateReset();
+
+    await userPresent.save();
+
+    logger.debug(userPresent.uuid);
+    logger.debug(userPresent.passwordReset.code);
+
+    // TODO: send email
+    return res.send({
+      message,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

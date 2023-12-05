@@ -9,6 +9,7 @@ import {
   getUserInfo,
   makeNewTokens,
   updatePassword,
+  forgotPassword,
 } from "../controllers/auth.controller.js";
 
 import {
@@ -16,6 +17,7 @@ import {
   signupUserSchema,
   makeNewTokensSchema,
   updatePasswordSchema,
+  forgotPasswordSchema,
 } from "../validations/schemas/auth.schema.js";
 
 const router = Router();
@@ -30,5 +32,6 @@ router.put(
   validate(updatePasswordSchema),
   updatePassword,
 );
+router.post("/forgot-password", validate(forgotPasswordSchema), forgotPassword);
 
 export default router;

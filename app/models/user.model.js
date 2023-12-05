@@ -29,6 +29,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "active", // active, inactive
     },
+    passwordReset: {
+      code: String,
+      expiry: Date,
+    },
   },
   {
     timestamps: true,
@@ -52,6 +56,16 @@ UserSchema.methods.isValidPassword = async function (password) {
     logger.error("Could not validate password");
     return false;
   }
+};
+
+UserSchema.methods.generateReset = function () {
+  let now = new Date();
+  let hrs = 2; // 2 hours
+  this.passwordReset = {
+    code: uuidv4(),
+    expiry: now.setTime(now.getTime() + hrs * 60 * 60 * 1000),
+  };
+  return;
 };
 
 export default mongoose.model("User", UserSchema);

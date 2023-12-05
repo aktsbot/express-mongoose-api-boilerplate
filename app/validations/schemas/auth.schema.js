@@ -41,3 +41,12 @@ export const updatePasswordSchema = joi
     }),
   })
   .unknown(true);
+
+export const forgotPasswordSchema = joi
+  .object()
+  .keys({
+    body: joi.object().keys({
+      email: joi.string().email().required(),
+    }),
+  })
+  .unknown(true);
