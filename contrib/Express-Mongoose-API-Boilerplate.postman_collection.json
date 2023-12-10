@@ -55,7 +55,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"james@mailinator.com\",\n    \"password\": \"password\"\n}",
+					"raw": "{\n    \"email\": \"james@mailinator.com\",\n    \"password\": \"Pass1234#\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -92,13 +92,7 @@
 					]
 				},
 				"method": "GET",
-				"header": [
-					{
-						"key": "x-refresh-token",
-						"value": "{{refreshToken}}",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"email\": \"moksha@mailinator.com\",\n    \"password\": \"password\",\n    \"fullName\": \"Moksha Icarus\"\n}",
@@ -116,6 +110,185 @@
 					"path": [
 						"auth",
 						"user-info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Tokens",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = pm.response.json();",
+							"",
+							"pm.collectionVariables.set('accessToken', res.accessToken);",
+							"pm.collectionVariables.set('refreshToken', res.refreshToken);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"refreshToken\": \"{{refreshToken}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/auth/token",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"oldPassword\": \"Password\",\n    \"newPassword\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/auth/password",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"auth",
+						"password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User Info",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"james@mailinator.com\",\n    \"fullName\": \"Jamie John Icarus\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/users",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"james@mailinator.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/auth/forgot-password",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"auth",
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"0a27ce26-41ec-4636-b3b9-712d177e7ae5\",\n    \"resetCode\": \"61de5194-226c-4ccc-b8b7-7813a421b787\",\n    \"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/auth/reset-password",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"auth",
+						"reset-password"
 					]
 				}
 			},
