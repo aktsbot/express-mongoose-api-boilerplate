@@ -19,9 +19,4 @@ $ npm i
 $ npm run dev
 ```
 
-## TODO:
-
-- postman collection
-- user update - email/fullname/password
-
 **Happy Hacking!**
