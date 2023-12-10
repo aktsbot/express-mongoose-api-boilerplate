@@ -26,7 +26,7 @@ export const sendForgotPasswordEmail = ({ to, resetCode, userId }) => {
   const link = `${config.frontendUrl}/auth/reset-password?userId=${userId}&resetCode=${resetCode}`;
   const html = `
 <p>To reset your password, please visit the following link:</p>
-<p><a href="${link}">${link}</a></p>
+<p><a href="${link}">Password reset link</a></p>
 `;
   const text = `To reset your password, please visit the following link:
 Link: ${link}
