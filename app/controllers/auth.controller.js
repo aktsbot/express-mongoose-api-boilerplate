@@ -1,6 +1,7 @@
 import logger from "../logger.js";
 
 import { makeToken, verifyJWT } from "../jwt.js";
+import { sendForgotPasswordEmail } from "../email.js";
 
 import User from "../models/user.model.js";
 import Session from "../models/session.model.js";
@@ -220,6 +221,11 @@ export const forgotPassword = async (req, res, next) => {
     logger.debug(userPresent.passwordReset.code);
 
     // TODO: send email
+    await sendForgotPasswordEmail({
+      to: body.email,
+      resetCode: userPresent.passwordReset.code,
+      userId: userPresent.uuid,
+    });
     return res.send({
       message,
     });

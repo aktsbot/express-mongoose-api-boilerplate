@@ -19,6 +19,15 @@ const config = {
   accessTokenPublicKey: process.env.ACCESS_TOKEN_PUBLIC_KEY,
   refreshTokenPrivateKey: process.env.REFRESH_TOKEN_PRIVATE_KEY,
   refreshTokenPublicKey: process.env.REFRESH_TOKEN_PUBLIC_KEY,
+
+  // email
+  smtpHost: process.env.SMTP_HOST,
+  smtpPort: process.env.SMTP_PORT,
+  smtpUsername: process.env.SMTP_USERNAME,
+  smtpPassword: process.env.SMTP_PASSWORD,
+  emailFromAddress: process.env.EMAIL_FROM_ADDRESS,
+
+  frontendUrl: process.env.FRONTEND_URL,
 };
 
 export default config;
