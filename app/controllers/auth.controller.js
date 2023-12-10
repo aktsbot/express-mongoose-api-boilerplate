@@ -227,3 +227,38 @@ export const forgotPassword = async (req, res, next) => {
     next(error);
   }
 };
+
+export const resetPassword = async (req, res, next) => {
+  try {
+    const { body } = req.xop;
+
+    const userFound = await User.findOne({
+      uuid: body.userId,
+    });
+
+    if (!userFound) {
+      return next({
+        status: 403,
+        message: "User not found",
+      });
+    }
+
+    // check if code has expired?
+    if (!userFound.isResetCodeValid(body.resetCode)) {
+      return next({
+        status: 400,
+        message: "Password reset token is invalid or has been expired.",
+      });
+    }
+
+    userFound.password = body.password;
+    userFound.clearReset();
+    await userFound.save();
+
+    return res.send({
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -50,3 +50,14 @@ export const forgotPasswordSchema = joi
     }),
   })
   .unknown(true);
+
+export const resetPasswordSchema = joi
+  .object()
+  .keys({
+    body: joi.object().keys({
+      userId: joi.string().guid().required(),
+      resetCode: joi.string().guid().required(),
+      password: joi.string().required(),
+    }),
+  })
+  .unknown(true);

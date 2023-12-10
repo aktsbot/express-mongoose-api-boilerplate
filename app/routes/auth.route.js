@@ -10,6 +10,7 @@ import {
   makeNewTokens,
   updatePassword,
   forgotPassword,
+  resetPassword,
 } from "../controllers/auth.controller.js";
 
 import {
@@ -18,6 +19,7 @@ import {
   makeNewTokensSchema,
   updatePasswordSchema,
   forgotPasswordSchema,
+  resetPasswordSchema,
 } from "../validations/schemas/auth.schema.js";
 
 const router = Router();
@@ -33,5 +35,6 @@ router.put(
   updatePassword,
 );
 router.post("/forgot-password", validate(forgotPasswordSchema), forgotPassword);
+router.post("/reset-password", validate(resetPasswordSchema), resetPassword);
 
 export default router;

@@ -68,4 +68,38 @@ UserSchema.methods.generateReset = function () {
   return;
 };
 
+UserSchema.methods.isResetCodeValid = function (inputResetCode) {
+  let now = new Date();
+  let code = this.passwordReset.code;
+  let expiryDate = this.passwordReset.expiry;
+  if (!expiryDate || !code) {
+    logger.debug("date or code not found");
+    return false;
+  }
+
+  if (code !== inputResetCode) {
+    logger.debug("code does not match");
+    logger.debug(`code ${code}`);
+    logger.debug(`inputResetCode ${inputResetCode}`);
+    return false;
+  }
+
+  expiryDate = new Date(expiryDate);
+
+  if (now > expiryDate) {
+    logger.debug("date expired");
+    return false;
+  }
+
+  return true;
+};
+
+UserSchema.methods.clearReset = function () {
+  this.passwordReset = {
+    code: "",
+    expiry: null,
+  };
+  return;
+};
+
 export default mongoose.model("User", UserSchema);
